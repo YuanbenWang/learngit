@@ -1,10 +1,40 @@
 import numpy as np
 import csv
 import time
+import os
 """
 input: feature.csv,label.csv
 output:feature_selcted.csv
 """
+
+def load_data(features,labels):
+    birth_data = []
+    with open(features) as csvfile:
+        csv_reader = csv.reader(csvfile)  # 使用csv.reader读取csvfile中的文件
+        for row in csv_reader:  # 将csv 文件中的数据保存到birth_data中
+            birth_data.append(row)
+    train = np.array(birth_data, dtype=np.int8)
+
+    birth_data2 = []
+    with open(labels) as csvfile:
+        csv_reader = csv.reader(csvfile)  # 使用csv.reader读取csvfile中的文件
+        for row in csv_reader:  # 将csv 文件中的数据保存到birth_data中
+            birth_data2.append(row)
+    test_ = np.array(birth_data2, dtype=np.int8)
+    test = list()
+    for i in test_:
+        for ii in i:
+            test.append(ii)
+    label = np.array(test)
+    return train,label
+
+def get_selected_fateures(train,train_argsort,num,num2):
+    train_new = []
+    train_argtop1000 = train_argsort[num:num2] # 927 top1000
+    for i in train_argtop1000:
+        train_new.append(train[:, i])
+    train_new = np.array(train_new).T
+    return train_new
 
 def Gini_calculation(test):
     count1 = 0
@@ -66,13 +96,13 @@ def Chi_square(i,j,train):
                 d += 1
         else:
             if train[line][i] == 1:
-                c += 1
-            else:
                 b += 1
+            else:
+                c += 1
     # if  (a+c+b+d) == (n):
     #     print ('Result is right.')
 
-    return n*((a*d-b*c)**2)/(a+c)/(a+d)/(c+d)/(b+d)
+    return n*((a*d-b*c)**2)/(a+c)/(a+b)/(c+d)/(b+d)
 
 def feature_select(train,test):
     Gini = Gini_calculation(test)
@@ -111,43 +141,33 @@ def feature_select(train,test):
 if __name__ == "__main__":
     time1 = time.time()
     features = '/home/huu/Downloads/apkss/train.csv'
+    features = '/home/huu/Downloads/apkss/select_train.csv'
     labels = '/home/huu/Downloads/apkss/label.csv'
-    savepath = "/home/huu/Downloads/apkss/select_train.csv"
+    savepath = "/home/huu/Downloads/apkss/feature_selected2.csv"
 
-    birth_data = []
-    with open(features) as csvfile:
-        csv_reader = csv.reader(csvfile)  # 使用csv.reader读取csvfile中的文件
-        for row in csv_reader:  # 将csv 文件中的数据保存到birth_data中
-            birth_data.append(row)
-    train = np.array(birth_data,dtype=np.int8)
-
-    birth_data2 = []
-    with open(labels) as csvfile:
-        csv_reader = csv.reader(csvfile)  # 使用csv.reader读取csvfile中的文件
-        for row in csv_reader:  # 将csv 文件中的数据保存到birth_data中
-            birth_data2.append(row)
-    test_ = np.array(birth_data2, dtype=np.int8)
-    test = list()
-    for i in test_:
-        for ii in i :
-            test.append(ii)
-
-    test = np.array(test)
-    del test_
-    del birth_data
-    del birth_data2
+    # get the numbers of features, and the sorted numbers of features
+    train, label = load_data(features, labels)
+    # train_sum = train.sum(axis=0)
+    # train_argsort = np.argsort(-train_sum)
+    # train_sort = np.sort(train_sum)[::-1]
+    #
+    # M = 299
+    # MM = 801
+    # train_new = get_selected_fateures(train, train_argsort, M, MM)
 
 
-    new_features = feature_select(train,test)
-    print(len(new_features[0]))
+    new_features = feature_select(train, label)
+
 
     with open(savepath, 'a', newline="") as ff:
         csv_w = csv.writer(ff)
-        csv_w.writerow(new_features)
+        csv_w.writerows(new_features)
 
-    print("over.")
+
+
+
+
 
     time2 = time.time()
-
     print('Time cost is ', (time2 - time1) / 60, 'min')
 

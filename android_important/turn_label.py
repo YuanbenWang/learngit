@@ -7,10 +7,10 @@ t = []
 with open(label, 'r', newline="") as fff:
     csv_w = csv.reader(fff)
     for line in csv_w:
-        if line[0] == '1':
-            t.append([0])
-        else:
+        if line[0] == '0':
             t.append([1])
+        else:
+            t.append([0])
 t=np.array(t)
 
 with open(label2, 'a', newline="") as fff:

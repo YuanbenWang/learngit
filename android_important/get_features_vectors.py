@@ -52,7 +52,7 @@ if __name__ == '__main__':
 
             with open(label, 'a', newline="") as fff:
                 csv_w = csv.writer(fff)
-                csv_w.writerow([0])
+                csv_w.writerow([1])
 
         except:
             error_list.append(paths)
@@ -79,7 +79,7 @@ if __name__ == '__main__':
 
             with open(label, 'a', newline="") as fff:
                 csv_w = csv.writer(fff)
-                csv_w.writerow([1])
+                csv_w.writerow([0])
 
         except:
             error_list.append(paths)
