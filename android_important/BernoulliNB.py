@@ -12,6 +12,7 @@ from scipy import stats
 import pylab as pl
 from sklearn.neighbors import KNeighborsClassifier
 import math
+import time
 
 
 
@@ -91,8 +92,9 @@ def get_selected_fateures(train,train_argsort,num):
     return train_new
 
 if __name__ == "__main__":
+    time1 = time.time()
     features = '/home/huu/Downloads/apkss/train.csv'
-    features = '/home/huu/Downloads/apkss/feature_selected/feature_auto_selected/800.csv'
+    # features = '/home/huu/Downloads/apkss/feature_selected_all.csv'
     labels = '/home/huu/Downloads/apkss/label.csv'
     savepath = "/home/huu/Downloads/apkss/select_train.csv"
     train, label = load_data(features, labels)
@@ -114,5 +116,7 @@ if __name__ == "__main__":
     # predict
     predict_NB(train, label)
 
+    time2 = time.time()
+    print('Time cost is ', (time2 - time1) / 60, 'min')
 
 

@@ -141,9 +141,9 @@ def feature_select(train,test):
 if __name__ == "__main__":
     time1 = time.time()
     features = '/home/huu/Downloads/apkss/train.csv'
-    features = '/home/huu/Downloads/apkss/select_train.csv'
+    # features = '/home/huu/Downloads/apkss/select_train.csv'
     labels = '/home/huu/Downloads/apkss/label.csv'
-    savepath = "/home/huu/Downloads/apkss/feature_selected2.csv"
+    savepath = "/home/huu/Downloads/apkss/feature_selected_all.csv"
 
     # get the numbers of features, and the sorted numbers of features
     train, label = load_data(features, labels)

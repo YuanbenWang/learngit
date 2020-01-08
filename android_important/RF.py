@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
 import csv
+import time
 
 def loaddata(features, labels):
     birth_data = []
@@ -85,11 +86,15 @@ def predict_RF(train,test):
 
 
 if __name__ == "__main__":
+    time1 = time.time()
     features = '/home/huu/Downloads/apkss/train.csv'
-    # features = '/home/huu/Downloads/apkss/feature_selected/feature_auto_selected/200.csv'
+    # features = '/home/huu/Downloads/apkss/feature_selected_all.csv'
     labels = '/home/huu/Downloads/apkss/label.csv'
     savepath = "/home/huu/Downloads/apkss/select_train.csv"
 
     train,test = loaddata(features,labels)
 
     predict_RF(train, test)
+
+    time2 = time.time()
+    print('Time cost is ', (time2 - time1) / 60, 'min')

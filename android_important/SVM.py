@@ -11,7 +11,7 @@ from sklearn.metrics import confusion_matrix, classification_report, recall_scor
 from sklearn.svm import SVC
 import math
 from sklearn import datasets
-
+import time
 import csv
 
 def loaddata(features, labels):
@@ -90,13 +90,17 @@ def predict_SVM(train,test):
     print(1 - recallscore)
 
 if __name__ == "__main__":
+    time1 = time.time()
     features = '/home/huu/Downloads/apkss/train.csv'
-    features = '/home/huu/Downloads/apkss/feature_selected/feature_auto_selected/800.csv'
+    # features = '/home/huu/Downloads/apkss/feature_selected_all.csv'
     labels = '/home/huu/Downloads/apkss/label.csv'
     savepath = "/home/huu/Downloads/apkss/select_train.csv"
 
     train,test = loaddata(features,labels)
 
     predict_SVM(train, test)
+
+    time2 = time.time()
+    print('Time cost is ', (time2 - time1) / 60, 'min')
 
 

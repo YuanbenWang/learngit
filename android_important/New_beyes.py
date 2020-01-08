@@ -5,6 +5,7 @@ from sklearn.naive_bayes import BernoulliNB
 import numpy as np
 from math import e
 import csv
+import time
 
 def loaddata(features,labels):
     birth_data = []
@@ -48,8 +49,9 @@ def Chi_square(i,j,train):
 
 if __name__=="__main__":
     features = '/home/huu/Downloads/apkss/train.csv'
-    features = '/home/huu/Downloads/apkss/select_train.csv'
+    # features = '/home/huu/Downloads/apkss/feature_selected_all.csv'
     labels = '/home/huu/Downloads/apkss/label.csv'
+    time1 = time.time()
 
 
 
@@ -61,6 +63,7 @@ if __name__=="__main__":
 
     for qq in range(NN):
 
+        print(qq)
         X_train, X_test, y_train, y_test = train_test_split(train,labelss, test_size=0.1)
 
         # calcuate the Chi_square
@@ -90,7 +93,7 @@ if __name__=="__main__":
         del list1
 
         abbb=len(X_train_0)
-        print(1)
+
         # P_x_equal_1_c0 = np.log(np.sum(X_train_0, axis=0)) -  np.log(len(X_train_0))
         # tmp = np.full(np.shape(X_train_0[0]),e)
         # tmp2 = np.power(tmp,P_x_equal_1_c0)
@@ -114,6 +117,7 @@ if __name__=="__main__":
         predict_1 = 0
         predict_0 = 0
         TP = FN = FP = 0
+
         predict_sum = len(y_test)
 
         # for raw_num,line in enumerate(X_test):
@@ -197,4 +201,7 @@ if __name__=="__main__":
     print('accuracy:',accuracy)
     print('FPR:',fpr)
     print('FNR:', fnr)
+
+    time2 = time.time()
+    print('Time cost is ', (time2 - time1) / 60, 'min')
     
