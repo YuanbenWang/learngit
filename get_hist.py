@@ -151,7 +151,7 @@ if __name__ == '__main__':
                     label_str = pathPart[-1]
                     count += 1
                     label_name.append(label_str)
-                    label_list.append(count)
+                label_list.append(count)
             except:
                 number += 1
                 print(1)
