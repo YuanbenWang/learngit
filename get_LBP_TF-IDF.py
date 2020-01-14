@@ -119,22 +119,27 @@ def lbp_hist(path):
 
 if __name__ == '__main__':
     time1 = time.time()
-    image_path = r'E:\virtus_test\10virtusImage'
-    save_path = r'E:\virtus_test\image_new_lbp_features'
-
+    image_path = r'/home/huu/Documents/virtus_test/10virtusImage'
+    save_path = r'/home/huu/Documents/virtus_test/LBP_NEW/lbp_text'
+    if not os.path.isdir(save_path):
+        os.makedirs(save_path)
 
     list_dirs = os.walk(image_path)
-    features_of_all_family = []
+    list_of_family_features = []
+    label_list = []
+    label_name = []
     number = 0
-
+    count = 0
+    label_str = ''
     for root, dirs, files in list_dirs:
         # for d in dirs:
         #     if not os.path.isdir(os.path.join(save_path, d)):
         #         os.makedirs(os.path.join(save_path, d))
 
-        list_of_family_features = []
+
         for f in files:
-            pathPart = root.split("\\")
+
+            pathPart = root.split("/")
             ImageFamilyPath = os.path.join(image_path, pathPart[len(pathPart) - 1])
             ImageFilePath = os.path.join(ImageFamilyPath, f)
             print(os.path.join(root, f))
@@ -144,17 +149,32 @@ if __name__ == '__main__':
             except:
                 number += 1
                 print(1)
+            if pathPart[-1] != label_str:
+                label_str = pathPart[-1]
+                count += 1
+                label_name.append(label_str)
+            label_list.append(count)
 
-        if not len(list_of_family_features):
-            continue
-        transformer = TfidfTransformer(smooth_idf=True)
-        tfidf = transformer.fit_transform(list_of_family_features)
-        family_features = tfidf.toarray()
-        save_path_of_famlily = os.path.join(save_path,pathPart[-1])
-        with open(save_path_of_famlily + '.csv','w',newline='') as f:
-            writer = csv.writer(f)
-            writer.writerows(family_features)
-        # print(family_features)
+
+
+    transformer = TfidfTransformer(smooth_idf=True)
+    tfidf = transformer.fit_transform(list_of_family_features)
+    family_features = tfidf.toarray()
+    save_path_of_famlily = os.path.join(save_path,'all_features')
+    with open(save_path_of_famlily + '.csv','w',newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(family_features)
+    # print(family_features)
+    save_path_of_famlily_label = os.path.join(save_path, 'label')+ '.txt'
+    with open(save_path_of_famlily_label ,'w',newline='') as f:
+        for fp in label_list:
+            f.write(str(fp))
+            f.write('\n')
+    save_path_of_famlily_label = os.path.join(save_path, 'label_name') + '.txt'
+    with open(save_path_of_famlily_label,'w',newline='') as f:
+        for fp in label_name:
+            f.write(fp)
+            f.write('\n')
 
     print('Finish! number of the lost samples is ' + str(number))
 
